@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozmo Travel Signature Generator</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Maven+Pro:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261005">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <span class="highlight">Cozmo Travel</span> Signature
+            </div>
+            <button id="admin-lock-btn" class="icon-btn locked" title="Admin Settings">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Admin Login Modal -->
+        <div id="admin-modal" class="modal hidden">
+            <div class="modal-overlay"></div>
+            <div class="modal-content glass-card">
+                <h3>Admin Access</h3>
+                <p>Please enter the admin password.</p>
+                <input type="password" id="admin-password" placeholder="Password">
+                <div id="admin-error" class="error-text hidden">Incorrect password</div>
+                <div class="modal-actions">
+                    <button id="admin-cancel" class="btn secondary">Cancel</button>
+                    <button id="admin-login" class="btn primary">Login</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 1: Generator -->
+        <main id="page-1" class="page active">
+            <div class="panel left-panel glass-card">
+                <h2>Details</h2>
+
+                <!-- Brand Selection (Always Top) -->
+                <div class="form-group">
+                    <label>Select Brand</label>
+                    <div class="brand-buttons" id="brand-buttons-container">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Admin Only Section -->
+                <div id="admin-section" class="admin-section hidden">
+                    <div class="section-badge">Admin Controls</div>
+                    <div class="form-group">
+                        <label>Brand Name</label>
+                        <input type="text" id="admin-brand-name" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>Brand Color (Hex Code e.g. 0062F0)</label>
+                        <input type="text" id="admin-color" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>Website URL</label>
+                        <input type="url" id="admin-website" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>Logo URL</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="url" id="admin-logo-url" value="" style="flex: 1; margin-bottom: 0;">
+                            <button type="button" id="btn-clear-logo" class="btn secondary"
+                                style="padding: 0 16px;">Clear</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Logo Width (px): <span id="lbl-logo-size">200</span></label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="range" id="admin-logo-width" min="50" max="400" value="200" style="flex: 1;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Custom Banners (Comma separated URLs; optional: imageURL|destinationURL)</label>
+                        <textarea id="admin-banners" rows="3">https://i.imgur.com/vf1S6wZ.png</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Facebook URL</label>
+                        <input type="url" id="admin-fb" value="https://facebook.com/cozmotravel">
+                    </div>
+                    <div class="form-group">
+                        <label>LinkedIn URL</label>
+                        <input type="url" id="admin-linkedin"
+                            value="https://www.linkedin.com/company/cozmo-travel-llc/">
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram URL</label>
+                        <input type="url" id="admin-ig" value="https://instagram.com/cozmotravel">
+                    </div>
+
+                    <div class="office-manager">
+                        <label>Manage Office Locations</label>
+                        <div class="office-list" id="admin-office-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                        <div class="add-office-row">
+                            <input type="text" id="admin-new-office" placeholder="Enter new address...">
+                            <button type="button" id="btn-add-office" class="btn primary">Add</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="margin: 20px 0; padding: 16px; border: 1px dashed #0062F0; border-radius: 8px; background: rgba(0, 98, 240, 0.05);">
+                        <h4 style="margin: 0 0 8px 0; color: #0062F0; font-size: 14px;">Publishing Changes</h4>
+                        <p style="margin: 0 0 12px 0; font-size: 12px; color: #526c93;">Since this is a static website, changes aren't automatically saved to your files. To publish updates, you must copy the new code and paste it into <strong style="color: #102a56;">script.js</strong>.</p>
+                        <button type="button" id="btn-export-code" class="btn primary full-width" style="background: #0062F0;">Copy Code for script.js</button>
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" id="btn-hide-brand" class="btn secondary" style="flex: 1;">Hide Brand</button>
+                        <button type="button" id="btn-delete-brand" class="btn secondary"
+                            style="flex: 1; color: #0062F0; border-color: rgba(0, 98, 240, 0.3); background: rgba(0, 98, 240, 0.05);">Delete Brand</button>
+                    </div>
+                </div>
+
+                <!-- Client Form -->
+                <form id="signature-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="inp-name" value="Jane Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" id="inp-title" value="Travel Consultant" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label>Tel (Office)</label>
+                            <input type="text" id="inp-tel" value="+971 6 538 9999" required>
+                        </div>
+                        <div class="form-group half">
+                            <label>Cell (Mobile)</label>
+                            <input type="text" id="inp-cell" value="+971 50 123 4567" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Office Location</label>
+                        <select id="inp-office">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Banner</label>
+                        <div id="banner-grid" class="banner-grid">
+                            <!-- Populated dynamically -->
+                            <div class="banner-placeholder">Loading banners...</div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="btn-generate" class="btn primary full-width mt-4" disabled>Generate
+                        Signature</button>
+                    <!-- Loading state -->
+                    <div class="status-msg" id="status-msg">Fetching images...</div>
+                </form>
+            </div>
+
+            <div class="panel right-panel">
+                <h2>Live Preview</h2>
+                <div class="preview-container glass-card" id="live-preview-container">
+                    <!-- Signature injected here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Page 2: Final Result -->
+        <main id="page-2" class="page hidden">
+            <div class="result-container glass-card">
+                <h2>Your Signature is Ready!</h2>
+                <p>Click "Copy Signature" below and paste it directly into your email client settings (Gmail, Outlook,
+                    Apple Mail).</p>
+                <div class="preview-container final-preview" id="final-preview-container">
+                    <!-- Cloned signature -->
+                </div>
+
+                <div class="result-actions">
+                    <button id="btn-back" class="btn secondary">Back to Edit</button>
+                    <button id="btn-copy" class="btn primary">Copy Signature</button>
+                </div>
+                <div id="copy-feedback" class="feedback-toast hidden">Copied to clipboard!</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js?v=20261006"></script>
+</body>
+
+</html>
