@@ -61,7 +61,7 @@ let companies = [
             "Abu Dhabi, UAE",
             "SHJ Airport Freight Centre, T2, UAE",
             "SHJ Airport Freight Centre, T4, UAE",
-            "SHJ Airport Freight Centre, AirArabia Hangar, UAE"
+            "SHJ Airport Freight Centre, AirArabia Hangar, UAE",
         ]
     },
     {
