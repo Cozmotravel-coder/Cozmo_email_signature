@@ -39,7 +39,8 @@ let companies = [
             "Muscat, Oman",
             "Salalah, Oman",
             "Doha, Qatar",
-            "Cairo, Egypt"
+            "Cairo, Egypt",
+            "Casablanca, Morocco"
         ]
 
     },
